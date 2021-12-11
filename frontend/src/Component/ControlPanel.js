@@ -1,4 +1,5 @@
-export default function ControlPanel() {
+import * as React from 'react';
+function ControlPanel() {
   return (
     <div className="control-panel">
       <h3>Marker, Popup, NavigationControl and FullscreenControl </h3>
@@ -23,3 +24,4 @@ export default function ControlPanel() {
     </div>
   );
 }
+export default React.memo(ControlPanel);

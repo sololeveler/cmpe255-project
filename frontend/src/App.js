@@ -4,7 +4,7 @@ import BasicDatePicker from "./Component/BasicDatePicker"
 import MarkerMap from "./Component/MarkerMap"
 import { Box, Autocomplete, TextField, Button } from "@mui/material"
 import { useState } from 'react'
-const dotenv = require("dotenv")
+import axios from "axios"
 
 function App() {
   const [countryCode, setCountryCode] = useState("")
@@ -14,7 +14,23 @@ function App() {
   const [coordinates, setCoordinates] = useState({ latitude: "", longitude: "" })
   const [dateTime,setDateTime]  = useState(new Date())
   const handleAddressSearch = () => {
-    console.log("heheh")
+    console.log(address,countryCode)
+    const code = countryCode.Code;
+    const geocodingUrl = isNaN(address) 
+    ? process.env.REACT_APP_GEOCODING_ADDRESS_API + `${address},${code}&limit=1&appid=${process.env.REACT_APP_OPEN_WEATHER_TOKEN}`
+    : process.env.REACT_APP_GEOCODING_ZIP_API +`${address},${code}&appid=${process.env.REACT_APP_OPEN_WEATHER_TOKEN}`
+    axios.get(geocodingUrl)
+    .then(response => {
+      isNaN(address)
+      ?setCoordinates({latitude: response.data[0].lat, longitude: response.data[0].lon })
+      : setCoordinates({latitude: response.data.lat, longitude: response.data.lon })
+      const weatherUrl = process.env.REACT_APP_ONE_CALL_API + `lat=${coordinates.latitude}&lon=${coordinates.longitude}&exclude=current,minutely,alerts&appid=${process.env.REACT_APP_OPEN_WEATHER_TOKEN}`
+      axios.get(weatherUrl)
+      .then(response=>{
+        console.log(response)
+      })
+    })
+    .catch(error=>alert(error))
   }
   return (
     <>
@@ -27,8 +43,8 @@ function App() {
               id="combo-box-demo"
               value={countryCode}
               inputValue={countryName}
-              onInputChange={(event, newInput) => setCountryName(newInput)}
-              onChange={(event, newValue) => setCountryCode(newValue)}
+              onInputChange={(event, newInput) => setCountryName(newInput.Name)}
+              onChange={(event, newValue) => setCountryCode(newValue.Code)}
               options={countryData}
               getOptionLabel={item => item.Name || ""}
               sx={{ width: 180 }}
@@ -40,7 +56,6 @@ function App() {
       </header>
       <main>
       <MarkerMap />
-
       </main>
     </>
   )

@@ -1,4 +1,5 @@
-export default function PopupDetails(props) {
+import * as React from 'react';
+function PopupDetails(props) {
   const {info} = props;
   const displayName = `${info.city}, ${info.state}`;
 
@@ -17,5 +18,5 @@ export default function PopupDetails(props) {
     </div>
   );
 }
-
+export default React.memo(PopupDetails);
 

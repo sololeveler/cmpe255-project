@@ -2,6 +2,10 @@ https://openweathermap.org/api/one-call-api
 https://openweathermap.org/api/geocoding-api
 https://openweathermap.org/widgets-constructor
 https://stackoverflow.com/questions/7222382/get-lat-long-given-current-point-distance-and-bearing
+https://www.mapbox.com/
+https://visgl.github.io/react-map-gl/examples/controls
+https://github.com/visgl/react-map-gl/tree/6.1-release/examples/controls
+https://github.com/leighhalliday/mapbox-react-demo
 
 # Getting Started with Create React App
 

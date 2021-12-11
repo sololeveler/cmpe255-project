@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import MapGL, {
+import ReactMapGL, {
     Popup,
     NavigationControl,
     FullscreenControl,
@@ -12,8 +12,6 @@ import Pins from './Pins';
 import PopupDetails from "./PopupDetails"
 
 import CITIES from '../cities.json';
-
-const TOKEN = ''; // Set your mapbox token here
 
 const geolocateStyle = {
     top: 0,
@@ -41,23 +39,21 @@ const scaleControlStyle = {
 
 export default function MarkerMap() {
     const [viewport, setViewport] = useState({
-        latitude: 40,
-        longitude: -100,
-        zoom: 3.5,
-        bearing: 0,
-        pitch: 0
+        width: "70vw",
+        height: "100vh",
+        zoom: 2
     });
     const [popupInfo, setPopupInfo] = useState(null);
 
     return (
         <>
-            <MapGL
+            <ReactMapGL
                 {...viewport}
-                width="100%"
-                height="100%"
-                mapStyle="mapbox://styles/mapbox/dark-v9"
-                onViewportChange={setViewport}
-                mapboxApiAccessToken={TOKEN}
+                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+                onViewportChange={viewport => {
+                    setViewport(viewport);
+                }}
+                mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
             >
                 <Pins data={CITIES} onClick={setPopupInfo} />
 
@@ -78,7 +74,7 @@ export default function MarkerMap() {
                 <FullscreenControl style={fullscreenControlStyle} />
                 <NavigationControl style={navStyle} />
                 <ScaleControl style={scaleControlStyle} />
-            </MapGL>
+            </ReactMapGL>
 
             <ControlPanel />
         </>
